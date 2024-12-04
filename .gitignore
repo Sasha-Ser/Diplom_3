@@ -1,0 +1,28 @@
+# Переходные файлы
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Виртуальные окружения
+venv/
+env/
+.env
+
+# Конфигурации IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Файлы сборки
+*.egg-info/
+dist/
+build/
+
+# Логи и временные файлы
+*.log
+*.tmp
+
+# Конфиденциальные файлы
+secrets.json
+config.yaml
