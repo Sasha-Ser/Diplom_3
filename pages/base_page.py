@@ -1,6 +1,7 @@
 import allure
 import selenium
 from selenium import webdriver
+from data import Data
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
@@ -13,7 +14,7 @@ class BasePage:
 
     @allure.step('Поиск элемента')
     def find_element_with_wait(self, locator):
-        WebDriverWait(self.driver, 800).until(
+        WebDriverWait(self.driver, Data.TIME_WAIT).until(
             expected_conditions.visibility_of_element_located(
             locator))
         return self.driver.find_element(*locator)
@@ -21,14 +22,14 @@ class BasePage:
     @allure.step('Клик по элементу')
     def click_to_element(self, locator):
         if isinstance(self.driver, webdriver.Chrome):
-            WebDriverWait(self.driver, 800).until(
+            WebDriverWait(self.driver, Data.TIME_WAIT).until(
                 expected_conditions.element_to_be_clickable(locator))
             self.driver.find_element(*locator).click()
         else:
-            WebDriverWait(self.driver, 800).until(
+            WebDriverWait(self.driver, Data.TIME_WAIT).until(
                 expected_conditions.visibility_of_element_located(locator))
             element = self.find_element_with_wait(locator)
-            WebDriverWait(self.driver, 100).until(
+            WebDriverWait(self.driver, Data.TIME_WAIT).until(
                 expected_conditions.element_to_be_clickable(locator))
             self.driver.execute_script("arguments[0].click();", element)
 

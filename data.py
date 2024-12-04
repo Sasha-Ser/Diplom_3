@@ -13,3 +13,5 @@ class Data:
         "password": "password",
         "name": "Username"
     }
+
+    TIME_WAIT = 10

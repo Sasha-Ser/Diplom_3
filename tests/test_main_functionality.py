@@ -5,10 +5,8 @@ import allure
 
 from data import Data
 from locators.locators_main_page import LocatorsMainPage
-from locators.locators_login_page import LocatorsLoginPage
-from locators.locators_personal_cabinet_page import LocatorsPersonalCabinet
 from pages.main_page import MainPage
-from pages.general_methods import GeneralMethods
+from pages.autorization_method import AutorizationMethod
 
 class TestMainFunctionality:
 
@@ -46,17 +44,11 @@ class TestMainFunctionality:
         assert driver.find_element_with_wait(LocatorsMainPage.COUNTER_FOR_BUN).text == '2'
 
     @allure.title('Проверка создания заказа авторизованным пользователем')
-    def test_close_window_with_add_info_success(self, setup_driver):
-        response = requests.post("https://stellarburgers.nomoreparties.site/api/auth/register", json=Data.TEST_USER)
-        driver = GeneralMethods(setup_driver)
+    def test_close_window_with_add_info_success(self, setup_driver, create_and_delete_user):
+        driver = AutorizationMethod(setup_driver)
         driver.autorization_by_user()
         driver = MainPage(setup_driver)
         driver.find_element_with_wait(LocatorsMainPage.BUN_FOR_BURGER)
         driver.drag_and_drop(LocatorsMainPage.BUN_FOR_BURGER, LocatorsMainPage.CONSTRUCTOR_BURGER)
         driver.click_to_element(LocatorsMainPage.CREATE_ORDER_BUTTON)
         assert driver.wait_for_change_text(LocatorsMainPage.ID_ORDER, "9999")
-        response = requests.post("https://stellarburgers.nomoreparties.site/api/auth/login", json=Data.TEST_USER)
-        r = response.json()
-        access_token = r["accessToken"]
-        headers = {'Authorization': f'{access_token}'}
-        response = requests.delete("https://stellarburgers.nomoreparties.site/api/auth/user", headers=headers)

@@ -39,5 +39,4 @@ class TestPassRecovery:
         driver.click_to_element(LocatorsPassRecovery.BUTTON_RECOVERY)
         driver.find_element_with_wait(LocatorsPassRecovery.BUTTON_SAVE)
         driver.click_to_element(LocatorsPassRecovery.CHANGE_VIEW)
-        expected_type = 'text'
-        assert expected_type in driver.find_element_with_wait(LocatorsPassRecovery.PASSWORD_FIELD).get_attribute('type')
+        assert 'text' in driver.find_element_with_wait(LocatorsPassRecovery.PASSWORD_FIELD).get_attribute('type')

@@ -2,6 +2,8 @@ import allure
 import selenium
 from selenium import webdriver
 from pages.base_page import BasePage
+from data import Data
+from locators.locators_main_page import LocatorsMainPage
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
@@ -13,7 +15,7 @@ class MainPage(BasePage):
     def wait_for_disappear(self, locator):
         elements = self.driver.find_elements(*locator)
         if elements:
-            WebDriverWait(self.driver, 100).until(expected_conditions.invisibility_of_element(elements[0]))
+            WebDriverWait(self.driver, Data.TIME_WAIT).until(expected_conditions.invisibility_of_element(elements[0]))
 
         return True
 
@@ -50,6 +52,16 @@ class MainPage(BasePage):
 
     @allure.step('Ожидание изменение текста')
     def wait_for_change_text(self, locator, value):
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, Data.TIME_WAIT).until(
             lambda driver: self.get_text_from_element (locator) != value)#d.(*locator).text != value)
         return True
+
+    @allure.step('Создание определенного заказа')
+    def creation_order(self):
+        self.find_element_with_wait(LocatorsMainPage.BUN_FOR_BURGER)
+        self.drag_and_drop(LocatorsMainPage.BUN_FOR_BURGER, LocatorsMainPage.CONSTRUCTOR_BURGER)
+        self.click_to_element(LocatorsMainPage.CREATE_ORDER_BUTTON)
+        self.wait_for_change_text(LocatorsMainPage.ID_ORDER, "9999")
+        order_id = self.get_text_from_element(LocatorsMainPage.ID_ORDER)
+        self.click_to_element(LocatorsMainPage.CLOSE_INFO_ORDER_BUTTON)
+        return order_id
